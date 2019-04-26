@@ -1,0 +1,22 @@
+{
+	"p" : 4,
+	"b" : 8192,
+	"pegawai" : [{
+		"tabel" : ["no_ktp", "tgl_lahir", "gender", "pendidikan"],
+		"r" : 128,
+		"n" : 10000,
+		"v" : 12,
+	}],
+	"dirawat" : [{
+		"tabel" : ["tgl_dirawat", "status", "periode"],
+		"r" : 8,
+		"n" : 150,
+		"v" : 6,
+	}],
+	"fasilitas" : [{
+		"tabel" : ["no_inventaris", "nama", "jenis", "tgl_dibeli", "pemakaian"],
+		"r" : 10,
+		"n" : 1000,
+		"v" : 7,
+	}],
+}
