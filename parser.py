@@ -2,6 +2,9 @@ import moz_sql_parser
 import json
 
 def isColExist(col, tabs, datatable):
+	if '.' in col:
+		datas = col.split('.')
+		return datas[1] in datatable[datas[0]]['tabel']
 	try:
 		for tab in tabs:
 			if col in datatable[tab]['tabel']:
@@ -90,4 +93,5 @@ def parse(query):
 		res['conditions'] = condition
 	return res
 
-print(parse('select tgl_dirawat, status, periode from fasilitas join dirawat using no_inventaris'))
+print(json.dumps(parse('select dirawat.tgl_dirawat, dirawat.status, fasilitas.nama from fasilitas join dirawat using no_inventaris')))
+print(json.dumps(parse('select tgl_dirawat, status, nama from fasilitas join dirawat using no_inventaris')))
