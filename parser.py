@@ -1,5 +1,6 @@
 import moz_sql_parser
 import json
+import math
 
 def isColExist(col, tabs, datatable):
 	if '.' in col:
@@ -92,6 +93,3 @@ def parse(query):
 				condition = str(sql['where']['neq'][0]) + ' <> ' + str(sql['where']['neq'][1])
 		res['conditions'] = condition
 	return res
-
-print(json.dumps(parse('select dirawat.tgl_dirawat, dirawat.status, fasilitas.nama from fasilitas join dirawat using no_inventaris')))
-print(json.dumps(parse('select tgl_dirawat, status, nama from fasilitas join dirawat using no_inventaris')))
