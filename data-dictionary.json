@@ -8,7 +8,7 @@
 		"v" : 12
 	},
 	"dirawat" : {
-		"tabel" : ["tgl_dirawat", "status", "periode"],
+		"tabel" : ["tgl_dirawat", "status", "periode", "no_inventaris", "no_ktp"],
 		"r" : 8,
 		"n" : 150,
 		"v" : 6
