@@ -32,7 +32,7 @@ def parse(query):
 	cols = []
 	tabs = []
 	joins = []
-	res = {}
+	res = {'query' : query}
 
 	data = readFile('data-dictionary.json')
 	keys = list(data.keys())[2:]
@@ -74,7 +74,7 @@ def parse(query):
 		if not isColExist(cols, tabs, data):
 			return 'Unknown column '+ cols
 
-	condition = ''
+	condition = '' 
 	if 'where' in sql:
 		if 'eq' in sql['where']:
 			if sql['where']['eq'][1].__class__.__name__ == 'dict':
@@ -108,5 +108,3 @@ def parse(query):
 				condition = str(sql['where']['neq'][0]) + ' <> ' + str(sql['where']['neq'][1])
 	res['conditions'] = condition
 	return res
-
-print(parse('select no_ktp from fasilitas;'))
