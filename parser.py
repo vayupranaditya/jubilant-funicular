@@ -1,15 +1,37 @@
 import moz_sql_parser
 import json
 
+def isColExist(col, tabs, datatable):
+	try:
+		for tab in tabs:
+			if col in datatable[tab]['tabel']:
+				return True
+	except:
+		return False
+	return False
+
+def readFile(name):
+	with open(name) as json_file:
+		return json.load(json_file)
+
+
 def parse(query):
 	try:
 		sql = moz_sql_parser.parse(query)
 	except:
-		return 'Error'
+		return 'Syntax error'
 	cols = []
 	tabs = []
 	joins = []
 	res = {}
+
+	data = readFile('data-dictionary.json')
+	keys = list(data.keys())[2:]
+	vals = list(data.values())[2:]
+	data = {}
+	for i in range(0, len(keys)):
+		data[keys[i]] = vals[i]
+
 	for col in sql['select']:
 		if 'value' in col:
 			cols.append(col['value'])
@@ -21,27 +43,18 @@ def parse(query):
 		for tab in sql['from']:
 			if 'join' in tab:
 				tabs.append(tab['join'])
-				if list(tab['on'].keys())[0] == 'eq':
-					sign = '='
-				elif list(tab['on'].keys())[0] == 'lt':
-					sign = '<'
-				elif list(tab['on'].keys())[0] == 'lte':
-					sign = '<='
-				elif list(tab['on'].keys())[0] == 'gt':
-					sign = '>'
-				elif list(tab['on'].keys())[0] == 'gte':
-					sign = '>='
-				else:
-					sign = '<>'
-				on = list(tab['on'].values())[0][0] + ' ' + sign + ' ' + list(tab['on'].values())[0][1]
-				joins.append({'table' : tab['join'], 'condition' : on})
-				res['joins'] = joins
+				joins.append({'table' : tab['join'], 'using' : tab['using']})
 			else:
 				tabs.append(tab)
 	else:
 		tabs = sql['from']
 
 	res['tables'] = tabs
+	res['joins'] = joins
+
+	for col in cols:
+		if not isColExist(col, tabs, data):
+			return 'Unknown column '+ col
 
 	if 'where' in sql:
 		if 'eq' in sql['where']:
@@ -76,3 +89,5 @@ def parse(query):
 				condition = str(sql['where']['neq'][0]) + ' <> ' + str(sql['where']['neq'][1])
 		res['conditions'] = condition
 	return res
+
+print(parse('select tgl_dirawat, status, periode from fasilitas join dirawat using no_inventaris'))
