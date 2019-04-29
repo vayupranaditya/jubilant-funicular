@@ -3,13 +3,18 @@ import json
 import math
 
 def isColExist(col, tabs, datatable):
+	if col == '*':
+		return True
 	if '.' in col:
 		datas = col.split('.')
 		return datas[1] in datatable[datas[0]]['tabel']
 	try:
-		for tab in tabs:
-			if col in datatable[tab]['tabel']:
-				return True
+		if tabs.__class__.__name__ == 'list':
+			for tab in tabs:
+				if col in datatable[tab]['tabel']:
+					return True
+		else:
+			return col in datatable[tabs]['tabel']
 	except:
 		return False
 	return False
@@ -36,11 +41,15 @@ def parse(query):
 	for i in range(0, len(keys)):
 		data[keys[i]] = vals[i]
 
-	for col in sql['select']:
-		if 'value' in col:
-			cols.append(col['value'])
-		else:
-			cols.append(col)
+	# print(sql['select'].__class__.__name__)
+	if sql['select'].__class__.__name__ == 'list':
+		for col in sql['select']:
+			if 'value' in col:
+				cols.append(col['value'])
+			else:
+				cols.append(col)
+	else:
+		cols = sql['select']['value']
 	res['columns'] = cols
 
 	if sql['from'].__class__.__name__ == 'list':
@@ -56,10 +65,15 @@ def parse(query):
 	res['tables'] = tabs
 	res['joins'] = joins
 
-	for col in cols:
-		if not isColExist(col, tabs, data):
+	if cols.__class__.__name__ == 'list':
+		for col in cols:
+			if not isColExist(col, tabs, data):
+				return 'Unknown column '+ col
+	else:
+		if not isColExist(cols, tabs, data):
 			return 'Unknown column '+ col
 
+	condition = ''
 	if 'where' in sql:
 		if 'eq' in sql['where']:
 			if sql['where']['eq'][1].__class__.__name__ == 'dict':
@@ -91,5 +105,5 @@ def parse(query):
 				condition = sql['where']['neq'][0] + ' <> \'' + sql['where']['neq'][1]['literal'] + '\''
 			else:
 				condition = str(sql['where']['neq'][0]) + ' <> ' + str(sql['where']['neq'][1])
-		res['conditions'] = condition
+	res['conditions'] = condition
 	return res
