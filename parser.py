@@ -41,13 +41,14 @@ def parse(query):
 	for i in range(0, len(keys)):
 		data[keys[i]] = vals[i]
 
-	# print(sql['select'].__class__.__name__)
 	if sql['select'].__class__.__name__ == 'list':
 		for col in sql['select']:
 			if 'value' in col:
 				cols.append(col['value'])
 			else:
 				cols.append(col)
+	elif sql['select'].__class__.__name__ == 'str':
+		cols = sql['select']
 	else:
 		cols = sql['select']['value']
 	res['columns'] = cols
@@ -71,7 +72,7 @@ def parse(query):
 				return 'Unknown column '+ col
 	else:
 		if not isColExist(cols, tabs, data):
-			return 'Unknown column '+ col
+			return 'Unknown column '+ cols
 
 	condition = ''
 	if 'where' in sql:
@@ -107,3 +108,5 @@ def parse(query):
 				condition = str(sql['where']['neq'][0]) + ' <> ' + str(sql['where']['neq'][1])
 	res['conditions'] = condition
 	return res
+
+print(parse('select no_ktp from fasilitas;'))
