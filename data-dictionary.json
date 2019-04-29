@@ -6,7 +6,8 @@
 		"r" : 128,
 		"n" : 10000,
 		"v" : 12,
-		"br" : 10000
+		"br" : 10000,
+		"pk" : "no_ktp"
 	},
 	"dirawat" : {
 		"tabel" : ["tgl_dirawat", "status", "periode", "no_inventaris", "no_ktp"],
@@ -14,12 +15,14 @@
 		"n" : 150,
 		"v" : 6,
 		"br" : 1000
+		"pk" : ""
 	},
 	"fasilitas" : {
 		"tabel" : ["no_inventaris", "nama", "jenis", "tgl_dibeli", "pemakaian"],
 		"r" : 10,
 		"n" : 1000,
 		"v" : 7,
-		"br" : 1000
+		"br" : 1000,
+		"pk" : "no_inventaris"
 	}
 }
