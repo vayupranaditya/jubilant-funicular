@@ -36,7 +36,7 @@ def joinAr(obj):
 		print()
 		x += 1
 
-	print('QEP Optimal:', min(join[0]['cost'], join[1]['cost']))
+	print('QEP Optimal: #', str(1 if join[0]['cost'] < join[1]['cost'] else 2))
 	if join[0]['cost'] < join[1]['cost']:
 		return {
 			'projection' : projection['cols'][0] + ' --' + projection['algo'],
