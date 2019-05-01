@@ -15,7 +15,6 @@
 		"n" : 150,
 		"v" : 6,
 		"br" : 1000
-		"pk" : ""
 	},
 	"fasilitas" : {
 		"tabel" : ["no_inventaris", "nama", "jenis", "tgl_dibeli", "pemakaian"],
